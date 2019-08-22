@@ -1,4 +1,4 @@
-export const ADD_NOTE = 'add_note';
-export const FETCH_NOTES = 'fetch_notes';
-export const SAVE_NOTE = 'save_note';
-export const DELETE_NOTE = 'delete_note';
+export const ADD_BLADE = 'add_blade';
+export const FETCH_BLADES = 'fetch_blades';
+export const SAVE_BLADE = 'save_blade';
+export const DELETE_BLADE = 'delete_blade';

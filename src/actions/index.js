@@ -1,58 +1,58 @@
-import { ADD_NOTE, FETCH_NOTES, SAVE_NOTE, DELETE_NOTE } from './types';
+import { ADD_BLADE, FETCH_BLADES, SAVE_BLADE, DELETE_BLADE } from './types';
 import electron from 'electron';
 
 const { ipcRenderer } = electron;
 
-export const addNote = note => dispatch => {
+export const addBlade = blade => dispatch => {
 
-    ipcRenderer.send('addNote', note);
-    ipcRenderer.on('note:added', (event, notes, newNote) => {
+    ipcRenderer.send('addBlade', blade);
+    ipcRenderer.on('blade:added', (event, blades, newBlade) => {
 
         var tempObj = {
-            notes,
-            newNote
+            blades,
+            newBlade
         }
 
         dispatch({
-            type: ADD_NOTE,
+            type: ADD_BLADE,
             payload: tempObj
         });
     });
 
 };
 
-export function fetchNotes() {
+export function fetchBlades() {
     return dispatch => {
-        ipcRenderer.send('fetchNotes');
-        ipcRenderer.on('fetched:notes', (event, notes) => {
+        ipcRenderer.send('fetchBlades');
+        ipcRenderer.on('fetched:blades', (event, blades) => {
             dispatch({
-                type: FETCH_NOTES,
-                payload: notes
+                type: FETCH_BLADES,
+                payload: blades
             });
         });
     }
 
 }
 
-export function saveNote(note) {
+export function saveBlade(blade) {
     return dispatch => {
-        ipcRenderer.send('saveNote', note);
-        ipcRenderer.on('note:saved', (event, notes) => {
+        ipcRenderer.send('saveBlade', blade);
+        ipcRenderer.on('blade:saved', (event, blades) => {
             dispatch({
-                type: FETCH_NOTES,
-                payload: notes
+                type: FETCH_BLADES,
+                payload: blades
             });
         });
     }
 }
 
-export function deleteNote(_id){
+export function deleteBlade(_id){
     return dispatch => {
-        ipcRenderer.send('deleteNote', _id);
-        ipcRenderer.on('note:deleted', (event, notes) => {
+        ipcRenderer.send('deleteBlade', _id);
+        ipcRenderer.on('blade:deleted', (event, blades) => {
             dispatch({
-                type: FETCH_NOTES,
-                payload: notes
+                type: FETCH_BLADES,
+                payload: blades
             });
         });
     }

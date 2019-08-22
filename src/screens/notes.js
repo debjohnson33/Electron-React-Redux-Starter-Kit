@@ -6,10 +6,10 @@ import { confirmAlert } from 'react-confirm-alert';
 import classNames from 'classnames';
 import toastr from 'toastr';
 
-import { saveNote, addNote, fetchNotes, deleteNote } from './../actions/index';
+import { saveBlade, addBlade, fetchBlades, deleteBlade } from './../actions/index';
 
 const initialState = {
-    newNote: '',
+    newBlade: '',
     _id: '',
     title: '',
     content: '',
@@ -28,7 +28,7 @@ class Note extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchNotes();
+        this.props.fetchBlades();
 
         toastr.options = {
             "closeButton": false,
@@ -52,9 +52,9 @@ class Note extends Component {
 
     componentWillReceiveProps(nextProps) {
 
-        if (this.state.newItemAdded === true && nextProps.latestNote._id !== undefined) {
+        if (this.state.newItemAdded === true && nextProps.latestBlade._id !== undefined) {
 
-            const { _id, title, content } = nextProps.latestNote
+            const { _id, title, content } = nextProps.latestBlade
 
             this.setState({
                 _id: _id,
@@ -91,17 +91,17 @@ class Note extends Component {
         });
     }
 
-    validate_newNote() {
-        const { newNote } = this.state
+    validate_newBlade() {
+        const { newBlade } = this.state
         this.state;
-        const isInvalid = !newNote;
+        const isInvalid = !newBlade;
         return isInvalid;
     }
 
-    submit_newNote(event) {
+    submit_newBlade(event) {
         event.preventDefault();
         var tempObj = {
-            title: this.state.newNote,
+            title: this.state.newBlade,
             content: ''
         };
         if (this.state.unsaved_changes) {
@@ -112,7 +112,7 @@ class Note extends Component {
                     {
                         label: `Proceed, without saving`,
                         onClick: () => {
-                            this.props.addNote(tempObj);
+                            this.props.addBlade(tempObj);
                             this.setState({
                                 newItemAdded: true,
                                 newNote: ''
@@ -125,18 +125,18 @@ class Note extends Component {
                 ]
             })
         } else {
-            this.props.addNote(tempObj);
+            this.props.addBlade(tempObj);
             this.setState({
                 newItemAdded: true,
-                newNote: ''
+                newBlade: ''
             });
         }
 
     }
 
-    openNote(note) {
+    openBlade(blade) {
 
-        const { _id, title, content } = note;
+        const { _id, title, content } = blade;
 
         if (this.state.unsaved_changes) {
             confirmAlert({
@@ -171,7 +171,7 @@ class Note extends Component {
 
     }
 
-    closeNote() {
+    closeBlade() {
         if (this.state.unsaved_changes) {
             confirmAlert({
                 title: `Warning!`,
@@ -207,12 +207,12 @@ class Note extends Component {
     }
 
 
-    handleSaveNote() {
+    handleSaveBlade() {
         const tempObj = {
             _id: this.state._id,
             content: this.state.content
         }
-        this.props.saveNote(tempObj);
+        this.props.saveBlade(tempObj);
         this.setState({
             initial_content: this.state.content,
             unsaved_changes: false
@@ -221,8 +221,8 @@ class Note extends Component {
         toastr.success('Your changes have been saved.', 'Hoorah')
     }
 
-    deleteNote() {
-        this.props.deleteNote(this.state._id);
+    deleteBlade() {
+        this.props.deleteBlade(this.state._id);
         this.setState({
             _id: '',
             title: '',
@@ -234,13 +234,13 @@ class Note extends Component {
 
     render() {
 
-        const deleteNote_alertOptions = {
+        const deleteBlade_alertOptions = {
             title: `Warning`,
             message: `You are about to permanently delete '${this.state.title}'`,
             buttons: [
                 {
                     label: 'Yes, please delete.',
-                    onClick: () => this.deleteNote()
+                    onClick: () => this.deleteBlade()
                 },
                 {
                     label: 'No, I want to keep my note!'
@@ -248,7 +248,7 @@ class Note extends Component {
             ]
         }
 
-        const { title, content, newNote } = this.state;
+        const { title, content, newBlade } = this.state;
         this.state;
 
         return (
@@ -258,15 +258,15 @@ class Note extends Component {
 
                     <div className="wrap">
 
-                        <div className="newNote">
-                            <form onSubmit={event => this.submit_newNote(event)}>
+                        <div className="newBlade">
+                            <form onSubmit={event => this.submit_newBlade(event)}>
                                 <div className="form_wrap">
                                     <div className="form_row">
                                         <div className="form_item">
                                             <div className="form_input">
-                                                <input type="text" name="newNote" placeholder="New note..." value={newNote} onChange={this.handleChange.bind(this)} />
+                                                <input type="text" name="newBlade" placeholder="New blade..." value={newBlade} onChange={this.handleChange.bind(this)} />
                                                 <span className="bottom_border"></span>
-                                                <button type="submit" disabled={this.validate_newNote()}>
+                                                <button type="submit" disabled={this.validate_newBlade()}>
                                                     <i className="fas fa-plus-circle"></i>
                                                 </button>
                                             </div>
@@ -278,10 +278,10 @@ class Note extends Component {
 
                         <nav>
                             <ul>
-                                {this.props.notes.map((note, index) => (
+                                {this.props.blades.map((blade, index) => (
                                     <li key={index}>
-                                        <span className={classNames({ 'item_wrap': true, 'active': note._id === this.state._id })} onClick={() => this.openNote(note)}>
-                                            <span className="hash">#</span> <span className="title">{note.title}</span>
+                                        <span className={classNames({ 'item_wrap': true, 'active': blade._id === this.state._id })} onClick={() => this.openBlade(blade)}>
+                                            <span className="hash">#</span> <span className="title">{blade.title}</span>
                                         </span>
                                     </li>
                                 ))}
@@ -312,17 +312,17 @@ class Note extends Component {
 
                                     <div className="actions">
                                         <span className="save">
-                                            <button onClick={() => this.handleSaveNote()} className={classNames({ 'alert': this.state.unsaved_changes, 'saveButton': true })}>
+                                            <button onClick={() => this.handleSaveBlade()} className={classNames({ 'alert': this.state.unsaved_changes, 'saveButton': true })}>
                                                 <i className="far fa-save"></i>
                                             </button>
                                         </span>
                                         <span className="delete">
-                                            <button onClick={() => confirmAlert(deleteNote_alertOptions)}>
+                                            <button onClick={() => confirmAlert(deleteBlade_alertOptions)}>
                                                 <i className="far fa-trash-alt"></i>
                                             </button>
                                         </span>
                                         <span className="close">
-                                            <button onClick={() => this.closeNote()}>
+                                            <button onClick={() => this.closeBlade()}>
                                                 <i className="fas fa-times"></i>
                                             </button>
                                         </span>
@@ -351,9 +351,9 @@ class Note extends Component {
 
 function mapStateToProps(state) {
     return {
-        notes: state.notes.arr,
-        latestNote: state.notes.latestNote
+        blades: state.blades.arr,
+        latestBlade: state.blades.latestBlade
     }
 }
 
-export default withRouter(connect(mapStateToProps, { addNote, saveNote, fetchNotes, deleteNote })(Note));
+export default withRouter(connect(mapStateToProps, { addBlade, saveBlade, fetchBlades, deleteBlade })(Blade));

@@ -1,10 +1,10 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
-import notesReducer from './notesReducer';
+import bladesReducer from './bladesReducer';
 
 const rootReducer = combineReducers({
-    notes: notesReducer
+    blades: bladesReducer
 });
 
 const store = createStore(rootReducer, {}, applyMiddleware(thunk));
