@@ -5,7 +5,7 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import MainLayout from './layouts/mainLayout';
 
 // routes/screens
-import Notes from './screens/blades';
+import Blades from './screens/blades';
 
 class App extends Component {
     render() {
@@ -14,7 +14,7 @@ class App extends Component {
                 <Switch>
                     <Route path="/" render={props => (
                         <MainLayout>
-                            <Notes {...props} />
+                            <Blades {...props} />
                         </MainLayout>
                     )} />
                 </Switch>
