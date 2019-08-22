@@ -4,7 +4,7 @@ const isDev = require('electron-is-dev');
 const { app, BrowserWindow, Menu, ipcMain } = electron;
 
 let mainWindow;
-let db_notes;
+let db_blades;
 
 app.on('ready', () => {
     mainWindow = new BrowserWindow({
@@ -23,37 +23,37 @@ app.on('ready', () => {
 // Database (NeDB)
 var userData = app.getPath('userData');
 
-db_notes = new Datastore({ filename: userData +'/db/notes.db', timestampData: true });
-db_notes.loadDatabase();
+db_blades = new Datastore({ filename: userData +'/db/blades.db', timestampData: true });
+db_blades.loadDatabase();
 
-ipcMain.on('addNote', (event, note) => {
-    db_notes.insert(note, function (err, newNote) {
+ipcMain.on('addBlade', (event, blade) => {
+    db_blades.insert(blade, function (err, newBlade) {
         if (!err) {
-            db_notes.find({}).sort({ updatedAt: -1 }).exec(function (err, notes) {                
+            db_blades.find({}).sort({ updatedAt: -1 }).exec(function (err, blades) {                
                 if (!err) {
-                    mainWindow.webContents.send('note:added', notes, newNote);
+                    mainWindow.webContents.send('blade:added', blades, newBlade);
                 }
             });
         }
     });
 });
 
-ipcMain.on('fetchNotes', (event) => {
+ipcMain.on('fetchBlades', (event) => {
 
-    db_notes.find({}).sort({ updatedAt: -1 }).exec(function (err, notes) {
+    db_blades.find({}).sort({ updatedAt: -1 }).exec(function (err, blades) {
         if (!err) {
-            mainWindow.webContents.send('fetched:notes', notes);
+            mainWindow.webContents.send('fetched:blades', blades);
         }
     });
 });
 
-ipcMain.on('saveNote', (event, note) => {
+ipcMain.on('saveBlade', (event, blade) => {
 
-    db_notes.update({ _id: note._id }, { $set: { content: note.content } }, {}, function (err, numReplaced) {
+    db_blades.update({ _id: blade._id }, { $set: { content: blade.content } }, {}, function (err, numReplaced) {
         if (!err) {
-            db_notes.find({}).sort({ updatedAt: -1 }).exec(function (err, notes) {
+            db_blades.find({}).sort({ updatedAt: -1 }).exec(function (err, blades) {
                 if (!err) {
-                    mainWindow.webContents.send('note:saved', notes);
+                    mainWindow.webContents.send('blade:saved', blades);
                 }
             });
         }
@@ -61,13 +61,13 @@ ipcMain.on('saveNote', (event, note) => {
 
 });
 
-ipcMain.on('deleteNote', (event, ID) => {
+ipcMain.on('deleteBlade', (event, ID) => {
 
-    db_notes.remove({ _id: ID }, {}, function (err, numRemoved) {
+    db_blades.remove({ _id: ID }, {}, function (err, numRemoved) {
         if (!err) {
-            db_notes.find({}).sort({ updatedAt: -1 }).exec(function (err, notes) {
+            db_blades.find({}).sort({ updatedAt: -1 }).exec(function (err, blades) {
                 if (!err) {
-                    mainWindow.webContents.send('note:deleted', notes);
+                    mainWindow.webContents.send('blade:deleted', blades);
                 }
             });
         }

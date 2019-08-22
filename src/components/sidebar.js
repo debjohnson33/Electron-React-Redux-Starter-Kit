@@ -10,7 +10,7 @@ class Sidebar extends Component {
                 <nav>
                     <ul>
                         <li>   
-                            <NavLink activeClassName="active" to="/" alt="Notes">
+                            <NavLink activeClassName="active" to="/" alt="Blades">
                                 <i className="far fa-sticky-note"></i>
                             </NavLink>
                         </li>

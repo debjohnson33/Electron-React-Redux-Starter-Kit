@@ -6,7 +6,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import classNames from 'classnames';
 import toastr from 'toastr';
 
-import { saveBlade, addBlade, fetchBlades, deleteBlade } from './../actions/index';
+import { saveBlade, addBlade, fetchBlades, deleteBlade } from '../actions/index';
 
 const initialState = {
     newBlade: '',
@@ -18,7 +18,7 @@ const initialState = {
     newItemAdded: false
 }
 
-class Note extends Component {
+class Blade extends Component {
 
     constructor(props) {
         super(props);
@@ -115,7 +115,7 @@ class Note extends Component {
                             this.props.addBlade(tempObj);
                             this.setState({
                                 newItemAdded: true,
-                                newNote: ''
+                                newBlade: ''
                             });
                         }
                     },
@@ -243,7 +243,7 @@ class Note extends Component {
                     onClick: () => this.deleteBlade()
                 },
                 {
-                    label: 'No, I want to keep my note!'
+                    label: 'No, I want to keep my blade!'
                 }
             ]
         }
@@ -252,9 +252,9 @@ class Note extends Component {
         this.state;
 
         return (
-            <section className="notes_wrap">
+            <section className="blades_wrap">
 
-                <aside className="notes_sidebar">
+                <aside className="blades_sidebar">
 
                     <div className="wrap">
 
@@ -295,7 +295,7 @@ class Note extends Component {
                 {this.state.title === '' &&
                     <div className="empty">
                         <p>
-                            Nothing selected.
+                            Bladhing selected.
                                 </p>
                     </div>
                 }
@@ -331,7 +331,7 @@ class Note extends Component {
                                 </div>
 
                                 <CKEditor
-                                    name="note_editor"
+                                    name="blade_editor"
                                     value={content}
                                     onChange={this.handleEditorChange.bind(this)}
                                     config={{ extraAllowedContent: 'div(*); p(*); strong(*);', height: 573 }}
