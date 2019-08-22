@@ -295,7 +295,7 @@ class Blade extends Component {
                 {this.state.title === '' &&
                     <div className="empty">
                         <p>
-                            Bladhing selected.
+                            Nothing selected.
                                 </p>
                     </div>
                 }
